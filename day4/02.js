@@ -36,7 +36,6 @@ for (let i = 0; i < input.length; i++) {
   // do until there's a `falls asleep - wakes up` cycle
   let next = parseData(input[i + 1]);
   while (next.action === "falls asleep") {
-
     // falls asleep
     i++;
     let min1 = parseInt(parseData(input[i]).minutes);
@@ -48,7 +47,7 @@ for (let i = 0; i < input.length; i++) {
     let minutesAsleep = min2 - min1;
     guards[guardId].addMinutesAsleep(minutesAsleep);
 
-    // add all the minutes to the guard's sleep history 
+    // add all the minutes to the guard's sleep history
     for (let j = min1; j < min2; j++) {
       guards[guardId].sleepHistory[j] += 1;
     }
@@ -58,21 +57,22 @@ for (let i = 0; i < input.length; i++) {
   }
 }
 
-// ---- Find the result
 let allGuards = Object.values(guards);
 
-let sleepMinutes = [];
-allGuards.forEach(guard => sleepMinutes.push(guard.minutesAsleep));
-let highestNumberOfSleepMinutes = Math.max(...sleepMinutes);
+// all sleepHistory items of all guards
+let completeHistory = [];
+allGuards.forEach(guard => completeHistory.push(...guard.sleepHistory));
 
-// - Guard with most minutes of sleep
-const sleepiestGuard = allGuards.find(guard => guard.minutesAsleep == highestNumberOfSleepMinutes);
+let maxIndex = Math.max(...completeHistory);
 
-let sleepHistory = sleepiestGuard.sleepHistory;
-// - Minute where the guard slept the most
-const sleepyMinute = sleepHistory.indexOf(
-  Math.max(...sleepHistory)
-);
+// find the minute where a guard spent the most time
+// sleeping and find that guard 
+allGuards.forEach(guard => {
+  if (guard.sleepHistory.indexOf(maxIndex) != -1) {
+    let minute = guard.sleepHistory.indexOf(maxIndex);
+    let winnerGuard = guard;
 
-const result = sleepiestGuard.id * sleepyMinute;
-console.log("Result:", result);
+    console.log("result", minute * winnerGuard.id);
+    return;
+  }
+});
