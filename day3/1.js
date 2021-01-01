@@ -12,14 +12,15 @@ for (let i = 0; i < 1000; i++) {
 
 // By receving a string `parseData` formats it in a map
 function parseData(string) {
-	let regExp = /#\d+ @ (\d+),(\d+): (\d+)x(\d+)/;
+	let regExp = /#(\d+) @ (\d+),(\d+): (\d+)x(\d+)/;
 	let res = regExp.exec(string);
 
 	return {
-		fromLeft: parseInt(res[1]),
-		fromTop: parseInt(res[2]),
-		width: parseInt(res[3]),
-		height: parseInt(res[4]),
+		id: parseInt(res[1]),
+		fromLeft: parseInt(res[2]),
+		fromTop: parseInt(res[3]),
+		width: parseInt(res[4]),
+		height: parseInt(res[5]),
 	};
 }
 
